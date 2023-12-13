@@ -2,6 +2,7 @@ package com.java.functional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class GroupingIntoMapExample {
     public static void main(String[] args) {
