@@ -2,6 +2,7 @@ package com.java.functional;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SortedMethodFunctional {
     public static void main(String[] args) {

@@ -5,6 +5,7 @@ import java.util.List;
 public class PrintAllStringValuesFunctional {
     public static void main(String[] args) {
         List<String> stringList = List.of("Hello", "hi", "wassup", "hey", "ola");
+        stringList.forEach(System.out::println);
         stringList.forEach(PrintAllStringValuesFunctional::printValueWithLength); // method reference
     }
 
