@@ -5,13 +5,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -21,7 +22,7 @@ public class AppConfig {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http){
         try {
             http.authorizeHttpRequests((requests)->requests
-                            .requestMatchers("/api/**").authenticated()
+                            .requestMatchers("/api", "/api/**").authenticated()
                             .requestMatchers("/home", "/home/**").permitAll())
                     .formLogin(Customizer.withDefaults())
                     .httpBasic(Customizer.withDefaults());
@@ -32,20 +33,11 @@ public class AppConfig {
     }
 
     @Bean
-    public InMemoryUserDetailsManager inMemoryUserDetailsManager(){
-        UserDetails adminUser = User.withDefaultPasswordEncoder()
-                .username("admin")
-                .password("password123")
-                .authorities("ADMIN")
-                .build();
-        UserDetails regularUser = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("genericpassword")
-                .authorities("USER")
-                .build();
-        return new InMemoryUserDetailsManager(adminUser, regularUser);
+    public UserDetailsService userDetailsService(DataSource dataSource){
+        return new JdbcUserDetailsManager(dataSource);
     }
 
+    // NOT THE RECOMMENDED WAY TO STORE PASSWORDS UDER AND PRODUCTION SCENARIO
     @Bean
     public PasswordEncoder passwordEncoder(){
         return NoOpPasswordEncoder.getInstance();
