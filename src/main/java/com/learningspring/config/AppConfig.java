@@ -1,10 +1,12 @@
 package com.learningspring.config;
 
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,8 +26,14 @@ public class AppConfig {
             http.authorizeHttpRequests((requests)->requests
                             .requestMatchers("/api", "/api/**").authenticated()
                             .requestMatchers("/home", "/home/**").permitAll())
-                    .formLogin(Customizer.withDefaults())
+//                    .formLogin(Customizer.withDefaults())
                     .httpBasic(Customizer.withDefaults());
+            http.csrf(new Customizer<CsrfConfigurer<HttpSecurity>>() {
+                @Override
+                public void customize(CsrfConfigurer<HttpSecurity> httpSecurityCsrfConfigurer) {
+                    httpSecurityCsrfConfigurer.disable();
+                }
+            });
             return http.build();
         } catch (Exception e) {
             throw new RuntimeException(e);
