@@ -14,7 +14,7 @@ public class Employee {
     private String lastName;
     private String email;
     private String phoneNumber;
-    private Integer Salary;
+    private Integer salary;
 
     // CONSTRUCTORS, GETTERS & SETTERS
     public Employee() {
@@ -26,7 +26,7 @@ public class Employee {
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        Salary = salary;
+        this.salary = salary;
     }
 
     public Long getId() {
@@ -70,10 +70,10 @@ public class Employee {
     }
 
     public Integer getSalary() {
-        return Salary;
+        return salary;
     }
 
     public void setSalary(Integer salary) {
-        Salary = salary;
+        salary = salary;
     }
 }
